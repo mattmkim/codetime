@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CodeTime</title>
+    <script src="fontawesome.js" crossorigin="anonymous"></script>
+    <script src="scripts/localstorage.js"></script>
+    <script src="scripts/leetcode.js"></script>
+    <script src="scripts/webactions.js"></script>
+    <script src="scripts/ui.js"></script>
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        CodeTime
+    </nav>
+    <div class="settings-content" id="settings-content">
+        <div class="settings-title">Add Blacklisted Websites</div>
+        <div class="settings-info">Please follow the format wwww.domainname, or else the website will not be blocked!</div>
+        <form class="settings-form" id="settings-form">
+            <div class="form-group">
+              <input type="website-address" name="address" class="website-address-control" id="website-address"  placeholder="Enter address">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="work-mode-content" id="work-mode-content">
+        <div class="timer" id="timer"></div>
+    </div>
+    <div class="blacklist-content" id="blacklist-content">
+        
+    </div> 
+    <div class="nav-footer">
+        <div class="nav-footer-element" id="settings">
+            <div class="icon-button">
+                <i class="fas fa-users-cog"></i>
+                <p>Settings</p>
+            </div>
+        </div>
+        <div class="nav-footer-element" id="work-mode">
+            <div class="icon-button">
+                <i class="far fa-clock"></i>
+                <p>Timer</p>
+            </div>
+            
+        </div>
+        <div class="nav-footer-element" id="blacklist">
+            <div class="icon-button">
+                <i class="fas fa-list"></i>
+                <p>Blacklist</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

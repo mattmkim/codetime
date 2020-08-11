@@ -1,0 +1,14 @@
+{
+    "name": "Getting Started Example",
+    "version": "1.0",
+    "description": "Build an Extension!",
+    "permissions": ["<all_urls>", "activeTab", "declarativeContent", "storage", "webNavigation", "webRequest"],
+    "background": {
+        "scripts": ["jquery-3.5.1.min.js", "scripts/localstorage.js", "scripts/leetcode.js", "scripts/background.js"],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_popup": "index.html"
+    },
+    "manifest_version": 2
+}
