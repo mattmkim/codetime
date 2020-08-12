@@ -30,9 +30,9 @@ function addListeners() {
     // when extension is installed, initialize storage for number of minutes you have + blacklisted websites
     chrome.runtime.onInstalled.addListener(function(details) {
         if (details.reason === "install") {
-            // first check for user data
             storage.initBlacklistWebsites();
             storage.initTimeToUse();
+            storage.initNumQuestionsSolved();
         }
     });
 
@@ -43,19 +43,16 @@ function addListeners() {
         if (pattern.test(url)) {
             var problem = url.split("/")[4];
             leetcode.checkSubmission(problem)
-            // call function to check if submission passed
         }
     }, {urls: ["<all_urls>"]})
     
     // detect if user is going to blacklisted site and if user has no time left
     chrome.tabs.onUpdated.addListener(function (tabID, changeInfo, tab) {
-        console.log(tab);
         if (tab.hasOwnProperty("url")) {
             var url = new URL(tab.url);
             // reached blacklisted website with no time remaining
             chrome.storage.sync.get("time", function (item) {
                 if (item["time"] == 0) {
-                    console.log("time is zero")
                     chrome.storage.sync.get("blacklistWebsites", function (item) {
                         var domain = url.hostname.substring(4);
                         if (item["blacklistWebsites"].includes(domain)) {

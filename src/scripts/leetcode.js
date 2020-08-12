@@ -1,15 +1,4 @@
-
 class Leetcode {
-    isCorrect() {
-        $.get(check, function(response, status) {
-            console.log(response)
-            if (response.state === "SUCCESS" && response.status_msg === "Accepted") {
-                storage.incrTimeToUse()
-            } else if (response.state === "SUCCESS" && response.status_msg === "Wrong Answer") {
-            }
-        })
-    }
-
     checkSubmission(problem) {
         var id;
         var request = `https://leetcode.com/api/submissions/${problem}/`
@@ -17,7 +6,6 @@ class Leetcode {
             var alreadySolved = false;
             for (var i = 1; i < response.submissions_dump.length; i++) {
                 if (response.submissions_dump[i].status_display === "Accepted") {
-                    console.log("you already solved this!")
                     alreadySolved = true;
                     break;
                 }
@@ -32,6 +20,7 @@ class Leetcode {
                     $.get(check, function(response, status) {
                         if (response.state === "SUCCESS" && response.status_msg === "Accepted") {
                             storage.incrTimeToUse();
+                            storage.incrNumQuestionsSolved();
                             clearInterval(interval);
                         } else if (response.state === "SUCCESS" && response.status_msg === "Wrong Answer") {
                             clearInterval(interval);

@@ -4,8 +4,6 @@ class LocalStorage {
         var websites = ["youtube.com", "facebook.com", "instagram.com"];
         chrome.storage.sync.set({
             blacklistWebsites: websites
-        }, function() {
-            console.log("blacklisted websites initialized")
         })
     }
 
@@ -23,8 +21,6 @@ class LocalStorage {
     initTimeToUse() {
         chrome.storage.sync.set({
             time: 0
-        }, function() {
-            console.log("time to use initialized")
         })
     }
 
@@ -32,8 +28,6 @@ class LocalStorage {
         chrome.storage.sync.get("time", function (item) {
             chrome.storage.sync.set({
                 time: item["time"] + 600000
-            }, function() {
-                console.log("time to use increased")
             })
         })
     }
@@ -46,10 +40,16 @@ class LocalStorage {
         })
     }
 
-    penaltyTimeToUse() {
-        chrome.storage.sync.get("time", function (item) {
+    initNumQuestionsSolved() {
+        chrome.storage.sync.set({
+            numQuestions: 0
+        })
+    }
+
+    incrNumQuestionsSolved() {
+        chrome.storage.sync.get("numQuestions", function (item) {
             chrome.storage.sync.set({
-                time: item["time"] - 60000
+                numQuestions: item["numQuestions"] + 1
             })
         })
     }

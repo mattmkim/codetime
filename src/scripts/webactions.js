@@ -2,13 +2,20 @@ var storage = new LocalStorage();
 
 chrome.storage.onChanged.addListener(function(changes) {
     if (changes.time) {
-        var milli = parseInt(changes.time.newValue);
-        var hours = Math.floor(milli/1000/60/60);
-        var mins = Math.floor((milli/1000/60/60 - hours)*60);
-        var seconds = Math.floor(((milli/1000/60/60 - hours)*60 - mins)*60);
+        let time = new Date(changes.time.newValue);
+        let hours = time.getUTCHours();
+        let mins = time.getUTCMinutes();
+        let seconds = time.getUTCSeconds();
+        
         if (mins < 10) {mins = "0" + mins;}
         if (seconds < 10) {seconds = "0" + seconds;}
+        console.log(seconds);
         document.getElementById("timer").innerHTML = `${hours}:${mins}:${seconds}`
+    }
+
+    if (changes.numQuestions) {
+        var num = changes.numQuestions.newValue
+        document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Sovled: ${num}</span>`
     }
 
     if (changes.blacklistWebsites) {
@@ -28,7 +35,6 @@ chrome.storage.onChanged.addListener(function(changes) {
                         </li>
                         </ul>`
         var newHTML = oldHTML + listCode;
-        console.log(newHTML)
         document.getElementById("blacklist-content").innerHTML = newHTML;
         let deleteButton = document.getElementById("blacklist-list").getElementsByClassName("far");
         Array.prototype.slice.call(deleteButton).forEach(function (item) {
@@ -45,13 +51,17 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("settings-content").style.display = "none";
     document.getElementById("work-mode-content").style.display = "flex";
 
+    // retrive num questions solved
+    chrome.storage.sync.get("numQuestions", function (item) {
+        document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Sovled: ${item["numQuestions"]}</span>`
+    })
+
     // retrieve time left
     chrome.storage.sync.get("time", function (item) {
-        var timeLeft = item["time"];
-        var hours = Math.floor(timeLeft/1000/60/60);
-        
-        var mins = Math.floor((timeLeft/1000/60/60 - hours)*60);
-        var seconds = Math.floor(((timeLeft/1000/60/60 - hours)*60 - mins)*60);
+        let time = new Date(item["time"]);
+        let hours = time.getUTCHours();
+        let mins = time.getUTCMinutes();
+        let seconds = time.getUTCSeconds();
         if (mins < 10) {mins = "0" + mins;}
         if (seconds < 10) {seconds = "0" + seconds;}
 
@@ -81,18 +91,27 @@ window.onload = function() {
         document.getElementById("blacklist-content").style.display = "none";
         document.getElementById("settings-content").style.display = "flex";
         document.getElementById("work-mode-content").style.display = "none";
+        document.getElementById("form-message").innerHTML = "";
+        document.getElementById("website-address").style.borderColor = "gray";
+        document.getElementById("settings-form").elements["address"].value = "";
     })
     
     document.getElementById("work-mode").addEventListener("click", function() {
         document.getElementById("blacklist-content").style.display = "none";
         document.getElementById("settings-content").style.display = "none";
         document.getElementById("work-mode-content").style.display = "flex";
+        document.getElementById("form-message").innerHTML = "";
+        document.getElementById("website-address").style.borderColor = "gray";
+        document.getElementById("settings-form").elements["address"].value = "";
     })
     
     document.getElementById("blacklist").addEventListener("click", function() {
         document.getElementById("blacklist-content").style.display = "flex";
         document.getElementById("settings-content").style.display = "none";
         document.getElementById("work-mode-content").style.display = "none";
+        document.getElementById("form-message").innerHTML = "";
+        document.getElementById("website-address").style.borderColor = "gray";
+        document.getElementById("settings-form").elements["address"].value = "";
     })
 
     let settingsForm = document.getElementById("settings-form")
@@ -101,20 +120,28 @@ window.onload = function() {
         let address = settingsForm.elements["address"].value
         var pattern = new RegExp("[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:.(com|net|org|io|edu|info|gov))+");
         if (!pattern.test(address)) {
-            // TODO: UI element to say "address is not valid"
+            document.getElementById("form-message").style.color = "red";
+            document.getElementById("website-address").style.borderColor = "red";
+            document.getElementById("form-message").innerHTML = `Address is not valid.`;
+            
+        } else {
+            chrome.storage.sync.get("blacklistWebsites", function (item) {
+                var prevBlacklist = item["blacklistWebsites"]
+                if (prevBlacklist.includes(address)) {
+                    document.getElementById("form-message").style.color = "red";
+                    document.getElementById("website-address").style.borderColor = "red";
+                    document.getElementById("form-message").innerHTML = `Address already in blacklist.`;
+                    
+                } else {
+                    var newBlacklist = prevBlacklist.concat(address)
+                    chrome.storage.sync.set({
+                        blacklistWebsites: newBlacklist
+                    })
+                    document.getElementById("form-message").style.color = "green";
+                    document.getElementById("form-message").innerHTML = `Address successfully added!`;
+                }
+            })
         }
-        chrome.storage.sync.get("blacklistWebsites", function (item) {
-            var prevBlacklist = item["blacklistWebsites"]
-            if (prevBlacklist.includes(address)) {
-                // TODO: UI element to say "this website is already in blacklist"
-            } else {
-                var newBlacklist = prevBlacklist.concat(address)
-                chrome.storage.sync.set({
-                    blacklistWebsites: newBlacklist
-                })
-                // TODO: UI element to say "successfully added"
-            }
-        })
     })
 
     let deleteButton = document.getElementById("blacklist-list").getElementsByClassName("far");

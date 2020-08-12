@@ -40,7 +40,7 @@ body {
 }
 
 .list-group-item .far:hover {
-    color: black
+    color: rgb(234, 157, 24);
 }
 
 .navbar {
@@ -59,10 +59,17 @@ body {
 }
 
 .settings-content {
+    height: 67%;
+    border-bottom: 1px solid rgba(125, 125, 125, 0.845);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+}
+
+.settings-title {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .settings-info {
@@ -75,6 +82,35 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-top: auto;
+    margin-bottom: auto !important;
+}
+
+.form-rounded {
+    border-radius: 1rem !important;
+}
+
+.form-message {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+
+.btn {
+    font-size: 13px !important;
+}
+
+.btn-primary {
+    background-color: rgb(247, 165, 23) !important;
+    border-color: rgb(247, 165, 23) !important;
 }
 
 .work-mode-content {
@@ -130,4 +166,10 @@ body {
     display: flex !important;
     flex-direction: row;
     justify-content: space-between;
+    padding: .5rem 1rem !important;
+}
+
+.badge-primary {
+    background-color: rgb(234, 157, 24) !important;
+    font-size: 14px !important;
 }
