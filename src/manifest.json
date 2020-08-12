@@ -1,7 +1,7 @@
 {
-    "name": "Getting Started Example",
+    "name": "CodeTime",
     "version": "1.0",
-    "description": "Build an Extension!",
+    "description": "Solve Leetcode questions and earn time to spend on your favorite sites!",
     "permissions": ["<all_urls>", "activeTab", "declarativeContent", "storage", "webNavigation", "webRequest"],
     "background": {
         "scripts": ["jquery-3.5.1.min.js", "scripts/localstorage.js", "scripts/leetcode.js", "scripts/background.js"],

@@ -9,10 +9,11 @@ class LocalStorage {
         })
     }
 
-    addNewWebsite(address) {
+    removeWebsite(address) {
         chrome.storage.sync.get("blacklistWebsites", function (item) {
-            var prevBlacklist = item["blacklistWebsites"]
-            var newBlacklist = prevBlacklist.concat(address)
+            var newBlacklist = item["blacklistWebsites"]
+            var ind = newBlacklist.indexOf(address);
+            newBlacklist.splice(ind, 1);
             chrome.storage.sync.set({
                 blacklistWebsites: newBlacklist
             })
@@ -41,6 +42,14 @@ class LocalStorage {
         chrome.storage.sync.get("time", function (item) {
             chrome.storage.sync.set({
                 time: item["time"] - 1000
+            })
+        })
+    }
+
+    penaltyTimeToUse() {
+        chrome.storage.sync.get("time", function (item) {
+            chrome.storage.sync.set({
+                time: item["time"] - 60000
             })
         })
     }

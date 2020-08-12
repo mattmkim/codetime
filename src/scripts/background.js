@@ -13,7 +13,7 @@ function checkCurrentPage() {
                 var url = new URL(tabs[i].url);
                 var domain = url.hostname.substring(4);
                 if (item["blacklistWebsites"].includes(domain)) {
-                    if (item["time"] == 0) {
+                    if (item["time"] <= 0) {
                         var blockURL = chrome.runtime.getURL("block.html") + '?url=' + url.hostname;
                         chrome.tabs.update(tabs[i].id, { url: blockURL });
                     } else {
@@ -30,9 +30,8 @@ function addListeners() {
     // when extension is installed, initialize storage for number of minutes you have + blacklisted websites
     chrome.runtime.onInstalled.addListener(function(details) {
         if (details.reason === "install") {
-            // initialize blacklisted websites
+            // first check for user data
             storage.initBlacklistWebsites();
-            // initialize time to use
             storage.initTimeToUse();
         }
     });
@@ -68,7 +67,6 @@ function addListeners() {
             })
         }
     });
-
 }
 
 addListeners();
