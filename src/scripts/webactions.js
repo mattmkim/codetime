@@ -14,7 +14,7 @@ chrome.storage.onChanged.addListener(function(changes) {
 
     if (changes.numQuestions) {
         var num = changes.numQuestions.newValue
-        document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Sovled: ${num}</span>`
+        document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Solved: ${num}</span>`
     }
 
     if (changes.blacklistWebsites) {
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // retrive num questions solved
     chrome.storage.local.get("numQuestions", function (item) {
-        document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Sovled: ${item["numQuestions"]}</span>`
+        document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Solved: ${item["numQuestions"]}</span>`
     })
 
     // retrieve time left
