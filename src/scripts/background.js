@@ -5,7 +5,7 @@ var leetcode = new Leetcode()
 // check if we are on a blacklisted site, and block site when timer runs out
 function checkCurrentPage() {
     chrome.tabs.query({}, function (tabs) {
-        chrome.storage.sync.get(["time", "blacklistWebsites"], function (item) {
+        chrome.storage.local.get(["time", "blacklistWebsites"], function (item) {
             for (var i = 0; i < tabs.length; i++) {
                 if (!tabs[i].hasOwnProperty("url")) {
                     continue;
@@ -51,9 +51,9 @@ function addListeners() {
         if (tab.hasOwnProperty("url")) {
             var url = new URL(tab.url);
             // reached blacklisted website with no time remaining
-            chrome.storage.sync.get("time", function (item) {
+            chrome.storage.local.get("time", function (item) {
                 if (item["time"] == 0) {
-                    chrome.storage.sync.get("blacklistWebsites", function (item) {
+                    chrome.storage.local.get("blacklistWebsites", function (item) {
                         var domain = url.hostname.substring(4);
                         if (item["blacklistWebsites"].includes(domain)) {
                             var blockURL = chrome.runtime.getURL("block.html") + '?url=' + url.hostname;

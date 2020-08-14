@@ -6,7 +6,7 @@ chrome.storage.onChanged.addListener(function(changes) {
         let hours = time.getUTCHours();
         let mins = time.getUTCMinutes();
         let seconds = time.getUTCSeconds();
-        
+
         if (mins < 10) {mins = "0" + mins;}
         if (seconds < 10) {seconds = "0" + seconds;}
         console.log(seconds);
@@ -52,12 +52,12 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("work-mode-content").style.display = "flex";
 
     // retrive num questions solved
-    chrome.storage.sync.get("numQuestions", function (item) {
+    chrome.storage.local.get("numQuestions", function (item) {
         document.getElementById("num-questions").innerHTML = `<span class="badge badge-primary">Questions Sovled: ${item["numQuestions"]}</span>`
     })
 
     // retrieve time left
-    chrome.storage.sync.get("time", function (item) {
+    chrome.storage.local.get("time", function (item) {
         let time = new Date(item["time"]);
         let hours = time.getUTCHours();
         let mins = time.getUTCMinutes();
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     // get current blacklist
-    chrome.storage.sync.get("blacklistWebsites", function(item) {
+    chrome.storage.local.get("blacklistWebsites", function(item) {
         var htmlCode = `<ul class="list-group list-group-flush" id="blacklist-list">`
         for (var i = 0; i < item["blacklistWebsites"].length; i++) {
             var domain = item["blacklistWebsites"][i];
@@ -125,7 +125,7 @@ window.onload = function() {
             document.getElementById("form-message").innerHTML = `Address is not valid.`;
             
         } else {
-            chrome.storage.sync.get("blacklistWebsites", function (item) {
+            chrome.storage.local.get("blacklistWebsites", function (item) {
                 var prevBlacklist = item["blacklistWebsites"]
                 if (prevBlacklist.includes(address)) {
                     document.getElementById("form-message").style.color = "red";
@@ -134,7 +134,7 @@ window.onload = function() {
                     
                 } else {
                     var newBlacklist = prevBlacklist.concat(address)
-                    chrome.storage.sync.set({
+                    chrome.storage.local.set({
                         blacklistWebsites: newBlacklist
                     })
                     document.getElementById("form-message").style.color = "green";
