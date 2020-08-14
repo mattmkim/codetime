@@ -9,7 +9,6 @@ chrome.storage.onChanged.addListener(function(changes) {
 
         if (mins < 10) {mins = "0" + mins;}
         if (seconds < 10) {seconds = "0" + seconds;}
-        console.log(seconds);
         document.getElementById("timer").innerHTML = `${hours}:${mins}:${seconds}`
     }
 
